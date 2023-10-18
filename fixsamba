@@ -1,5 +1,5 @@
 #!/bin/sh
-touch /tmp/000init-start
+touch /tmp/000init-start-samba-fix
 
 # Wait for all services to load
 i=0
@@ -13,6 +13,8 @@ while [ $i -le 20 ]; do
    sleep 1
 done
 
+sleep 10
+
 # Kill Samba service, replace conf file with custom, and restart
 for pid in `ps -w | grep smbd | grep -v grep | awk '{print $1}'`
 do
@@ -20,8 +22,22 @@ do
    kill $pid
 done
 
-sleep 3m
+sleep 1m
 
+#if there is a better live-modified smn.conf file for config, it will save it on jffs (and copy back if none)
+cp /etc/smb.conf /jffs/
 cp /jffs/smb.conf /etc/
-chmod 444 /etc/smb.conf
-smbd -D -s /etc/smb.conf
+chmod 666 /etc/smb.conf
+
+#Sometimes /etc/samba does not exist
+mkdir /etc/samba
+cp /etc/samba/* /jffs/samba/
+cp /jffs/samba/* /etc/samba/
+
+#Launches SAMBA service
+/usr/sbin/smbd -D -s /etc/smb.conf
+#This might end up with following error:
+#ERROR: can't open /var/run/samba/smbd.pid: Error was No such file or directory
+
+#If above fails, let's try again:
+service restart_samba
