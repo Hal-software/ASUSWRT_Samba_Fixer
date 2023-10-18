@@ -11,7 +11,7 @@ For more information on how this works, see https://securityforrealpeople.com/20
 Requirements:
 =============
 
-* Runs on an Asus wireless router using ASUSWRT firmware. This is known to work on the Asus RT-AC87U; it likely works on most other RT-XXXXX models running version 3.0.0.4 or newer. 
+* Runs on an Asus wireless router using ASUSWRT firmware. This is known to work on the Asus RT-AC87U; it likely works on most other RT-XXXXX models (also 4G-AC68U) running version 3.0.0.4 or newer. 
 * This only works if a USB drive is attached
 
 Usage: 
